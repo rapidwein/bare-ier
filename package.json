@@ -1,0 +1,8 @@
+{
+  "name": "bare-ier",
+  "version": "1.0.0",
+  "description": "chat up",
+  "dependencies": {
+    "express": "^4.10.2"
+  }
+}
