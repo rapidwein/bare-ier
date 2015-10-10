@@ -1,0 +1,20 @@
+{
+  "name": "bare-ier",
+  "main": "index.js",
+  "version": "1.0.0",
+  "homepage": "https://github.com/rapidwein/bare-ier",
+  "authors": [
+    "Varun <rapidwein@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^0.5"
+  }
+}
