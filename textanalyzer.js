@@ -4,24 +4,29 @@ var data = {
 	keyword: "", 
 };
 	var index1, index2;
-	if(((index1 = text.indexOf("come to")) || (index1 = text.indexOf("came to")) || (index1 = text.indexOf("gone to")) || (index1 = text.indexOf("went to"))) != -1) {
-		s = text.charAt(index+7);
-		if(s == "." || s == text.length - 1) {
+	if(((index1 = text.indexOf("come to"))!= -1 || (index1 = text.indexOf("came to")) != -1|| (index1 = text.indexOf("gone to")) != -1|| (index1 = text.indexOf("went to"))!= -1) ) {
+		s = text.charAt(index1+7);
+		if(s == "." || s == text.length) {
 			data.type = "DEFAULT";
 			return data;
 		}
-		if((index2 = text.indexOf(" ",index1 + 8)) != -1) {
-			data.keyword = text.substring(index1 + 8, index2);
-			if(data.keyword == "a" || data.keyword == "the") {
-				data.type = "DEFAULT";
-				return data;
+		
+		var endings = ['street', 'st.', 'road', 'rd.', 'blvd.', 'boulevard', 'crossings', 'trail', 'driveway', 'dr.', 'creek', 'city', 'state', 'province','county'];
+		index2 = -1;
+		i = 0;
+		for(i = 0 ; i < endings.length ; i++) {
+			if(text.indexOf(endings[i]) != -1) {
+				index2 = text.indexOf(endings[i]);
+				break;
 			}
-		
 		}
-		else
-			data.keyword = text.substring(index1 + 8,text.length);
-			data.type = "LOCATION";
-		
+
+		data.keyword = text.substring(index1 + 8);
+		if(index2 != -1) {
+			data.keyword = text.substring(index1 + 8, index2 + endings[i].length);
+		}
+		data.type = "LOCATION";
+		console.log(data.keyword);
 		
 	}
 	else if((index1 = text.indexOf("watched")) != -1) {

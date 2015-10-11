@@ -81,7 +81,7 @@ $(document).ready(function() {
 	});
 });
 
-function displayCard(type, data) {console.log(type);
+function displayCard(type, data) {
 	switch(type) {
 		case 'weather' : 
 			displayWeatherPermissionContent(data);
@@ -96,14 +96,7 @@ function displayCard(type, data) {console.log(type);
 			displayFlightPreviewContent(data);
 			break;
 		case "map" :
-			switch(data.subtype) {
-				case "getLoc" :
-					displayLocationPermissionContent(data);
-					break;
-				case "getMarker" :
-					displayLocationMapContent(data);
-					break;
-			}
+			displayMapPermissionContent(data);
 			break;
 		case "displayWeather" :
 			displayWeatherContent(data);
@@ -237,24 +230,23 @@ function processDisplayContent(data) {console.log(data, typeof(data));
 	displayCard(data.type, data.data);
 }
 function displayWeatherPermissionContent(data) {
-	var div = createPermissionDiv1({ 'question' : 'Do you want to view weather information? ' + data, 'type' : 'WEATHER', 'keyword' : data}, processUserPermChoice);
+	var div = createPermissionDiv1({ 'question' : 'Do you want to view weather information?', 'type' : 'WEATHER', 'keyword' : data}, processUserPermChoice);
 	$("#screen-share-container").append(div);
 }
 function displayWeatherContent(data) {
-	var html = "<div style='height:95%;overflow-y : none;width:50%;color:white;margin-left:auto;margin-right:auto;'><div><b>Place</b> : " + data.city.name + "</div>";
+	var html = "<div style='height:95%;overflow-y : none;color:white;margin-left:20%;margin-right:auto;'><button style='float:right; onClick='$(this).parent().remove();'>Close</button>";
 	temp = data.list;
 	n = data.cnt;
-	for(i = 0 ; i < 5 && i < n ; i++) {
+	
 		var x = "<div>";
-		t = temp[i];
-		d = new Date(t.dt * 1000);
-		x += "<b>Date</b> : " + d.getMonth() + "/" + d.getDate() + "<br>";
-		x += "<b>Temperature(C)</b> : " + ((t.main.temp)-273).toFixed(1) + "<br>";
-		x += "<b>Min. Temperature(C) </b>: " + ((t.main.temp_min)-273).toFixed(1) + "<br>";
-		x += "<b>Max. Temperature(C) </b>: " + ((t.main.temp_max)-273).toFixed(1) + "<br>";
-		x += "<b>Humidity </b>: " + t.main.humidity + "%<br></div><hr>";
+		t = temp[0];
+		d = new Date();
+		x += "<div style='font-size:280px;'>" + ((t.main.temp)-273).toFixed(1) + "°C</div>";
+		x += "<div style='font-size : 30px;'>" + (parseInt(d.getMonth())+1) + "/" + d.getDate() + " " + data.city.name;
+		x += "<b style='margin-left:55px;'>Min</b>: " + ((t.main.temp_min)-273).toFixed(1) + "°C ";
+		x += "<b style='margin-left:55px;'>Max</b>: " + ((t.main.temp_max)-273).toFixed(1) + "°C ";
+		x += "<b style='margin-left:55px;'>Humidity</b>: " + t.main.humidity + "%<br></div>" + "</div>";
 		html += x;
-	}
 	html += "</div>";
 	$("#screen-share-container").html(html);
 }
@@ -271,6 +263,12 @@ function displayMovieContent(data) {
 					"<div><b>imDb Rating : </b>" + data.imdbRating + "</div></div>";
 		$("#screen-share-container").html(html);
 	}
+	else {
+		var html = "<div style='height:95%;overflow-y : none;margin-top:5%;width:75%;color:white;margin-left:auto;margin-right:auto;border:1px solid black; padding :20px; text-align:justify;'>" +
+					"<button style='float:right;' onClick = '$(this).parent().remove();'>Close</button>"+
+					"<div>Movie not found</div></div>";
+		$("#screen-share-container").html(html);	
+	}
 }
 
 function displayLinkContent(data) {}
@@ -278,7 +276,42 @@ function displayLinkContent(data) {}
 function displayFlightPreviewContent(data) {}
 function displayFlightContent(data) {}
 
-function displayLocationPermissionContent(data) {}
-function displayLocationMapContent(data) {}
-function displayMapContent(data) {}
+function displayMapPermissionContent(data) {
+	var div = createPermissionDiv({ 'question' : 'Do you want to view maps for  ' + data, 'type' : 'MAP', 'keyword' : data}, processUserPermChoice);
+	$("#screen-share-container").append(div);
+}
+function displayMapContent(data) {
+	$("#mapContent").remove();
+	
+	$("#screen-share-container").append("<div><div id='mapContent' style='position:absolute; top:5%;left :0px; width:100%; height:95%'></div><button style='float:right;' onClick = '$(this).parent().remove();'>Close</button></</div>");
+
+	var map;
+	function initMap() {
+	  var mapProp =  {
+	    center: new google.maps.LatLng(data[0].lat, data[0].lng),
+	    zoom: 15,
+	     mapTypeId:google.maps.MapTypeId.ROADMAP
+	  }
+	  map = new google.maps.Map(document.getElementById('mapContent'),mapProp);
+	  
+	  for (var i = 0; i < data.length; i++) {
+	    createMarker({'geometry' : {'location' : {'lat' : data[i].lat, 'lng' : data[i].lng}}});
+	  }
+	}
+
+function createMarker(place) {
+	  var placeLoc = place.geometry.location;
+	  var marker = new google.maps.Marker({
+	    map: map,
+	    position: place.geometry.location
+	  });
+	  marker.setMap(map);
+	}
+
+	
+	//google.maps.event.addDomListener(window, 'load', initMap);
+	
+initMap();
+//google.maps.event.addDomListener(window, 'load', initialize);
+}
 

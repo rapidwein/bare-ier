@@ -24,7 +24,7 @@ io.on('connection', function(socket){
     io.to(roomName).emit('chat',process);
     var data = analyze.analyseText(process.text);
     io.to(roomName).emit(data.type, data.keyword);
-
+    console.log(data);
   });
 });
 
@@ -70,6 +70,25 @@ app.post('/room/:id', urlencodedParser, function(req, res) {
           }
       })
       break;
+
+    case 'MAP' :
+      request("https://maps.googleapis.com/maps/api/place/textsearch/json?key=AIzaSyD-NyxLadsJ5T2omJ9vL1DLgS04eePDOuQ&query=" + keyword, function (error, response, body) {
+          if (!error && response.statusCode == 200) {
+              body = JSON.parse(body);
+              var resData = [];
+              for(cood in body.results) {
+                var t = {};
+                t.add = body.results[cood].formatted_address;
+                t.lat = body.results[cood].geometry.location.lat;
+                t.lng = body.results[cood].geometry.location.lng;
+                resData.push(t);
+              }
+              res.end("{\"type\": \"displayMap\", \"data\" : " + JSON.stringify(resData) + "}");
+          }
+      })
+      break;
+
+
 
   }
 });

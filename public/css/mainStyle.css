@@ -125,10 +125,19 @@ body {
 }
 
 #permission-card {
-	width : 75%;
-	border:1px solid gray;
-	background : white;
-	color : darkgray;
+	width : 25%;
+	color : white;
 	padding : 20px;
 	font-size:20px;
+}
+
+#perm-yes, #perm-no {
+	background : black;
+	border : 0px solid black;
+	color : white;
+	padding : 5px;
+	margin : 10px;
+	margin-left:20px;
+	font-size:16px;
+	cursor:pointer;
 }

@@ -3,14 +3,22 @@
     <link rel="stylesheet" type="text/css" href="/public/css/mainStyle.css" />
     <script src="/socket.io/socket.io.js"></script>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <!--script src='/public/js/googlemaps.js' async defer></script-->
+    <script src='http://maps.googleapis.com/maps/api/js?library=places'></script>
     <script src="/public/js/mainScript.js"></script>
     <script src="/public/js/speechRecognition.js"></script>
     <script src="/public/js/socketed.js"></script>
+
+    @import "http://weloveiconfonts.com/api/?family=entypo";
+    @import url(http://weloveiconfonts.com/api/?family=fontawesome);
+
+
   </head>
   <body>
     <div id="main-header">Bare-ier</div>
     <div id="main-content">
       <div id="screen-share-container">
+        <div id='mapContent'></div>
       </div>
       <div id="chat-window-container">
         <div id="chat-messages"></div>

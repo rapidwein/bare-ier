@@ -10,8 +10,8 @@ socket.on('MOVIE',function(data){
 socket.on('CINEMA',function(data){
 	displayCard("movie", data);
 });
-socket.on('MAP',function(data){
-	displayCard("movie", data);
+socket.on('LOCATION',function(data){console.log(data);
+	displayCard("map", data);
 });
 socket.on('WEATHER',function(data){
 	displayCard("weather", data);
