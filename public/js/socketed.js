@@ -14,5 +14,5 @@ socket.on('MAP',function(data){
 	displayCard("movie", data);
 });
 socket.on('WEATHER',function(data){
-	displayCard("movie", data);
+	displayCard("weather", data);
 });

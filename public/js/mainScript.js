@@ -155,8 +155,60 @@ function createPermissionDiv(data, callback) {
         return function() {
         	cdata = {
 				'type' : k.type,
-				'choice' : 'y',
+				'choice' : 'n',
 				'keyword' : data.keyword
+			};
+            callback(cdata);
+        };
+    })(data));
+
+
+	pInput.appendChild(yB);
+	pInput.appendChild(nB);
+
+	mainDiv.appendChild(questionDiv);
+	mainDiv.appendChild(pInput);
+
+
+	return mainDiv;
+}
+
+function createPermissionDiv1(data, callback) {
+	var mainDiv = document.createElement("div");
+	mainDiv.id = "permission-card";
+
+	var questionDiv = document.createElement("div");
+	questionDiv.id = "permission-question";
+	$(questionDiv).html(data.question + "<br/>Place : <input type='text' name='place' id='placeinput' />");
+
+	var pInput = document.createElement("div");
+	pInput.id = "permission-ip-cont";
+
+	var yB = document.createElement("button");
+	yB.id = "perm-yes";
+	yB.value = "yes";
+	$(yB).html("Yes");
+	$(yB).on('click', (function(k) { 
+        return function() {
+        	cdata = {
+				'type' : k.type,
+				'choice' : 'y',
+				'keyword' : $("#placeinput").val()
+			};
+            callback(cdata);
+        };
+    })(data));
+
+	var nB = document.createElement("button");
+	nB.id = "perm-no";
+	nB.value = "no";
+	$(nB).html("No");
+	$(nB).on('click', (function(k) { 
+        return function() {
+        	cdata = {
+				'type' : k.type,
+				'choice' : 'n',
+				'keyword' : $("#placeinput").val()
 			};
             callback(cdata);
         };
@@ -176,27 +228,49 @@ function createPermissionDiv(data, callback) {
 function processUserPermChoice(cdata) {
 	$("#permission-card").remove();
 	var url = '/room/' + bareier.room;
-	sendAJAXRequest(url, cdata, 'post', processDisplayContent);
+	if(cdata.choice == 'y') 
+		sendAJAXRequest(url, cdata, 'post', processDisplayContent);
 }
 
 function processDisplayContent(data) {console.log(data, typeof(data));
 	data = $.parseJSON(data);
 	displayCard(data.type, data.data);
 }
-function displayWeatherPermissionContent(data) {}
-function displayWeatherContent(data) {}
+function displayWeatherPermissionContent(data) {
+	var div = createPermissionDiv1({ 'question' : 'Do you want to view weather information? ' + data, 'type' : 'WEATHER', 'keyword' : data}, processUserPermChoice);
+	$("#screen-share-container").append(div);
+}
+function displayWeatherContent(data) {
+	var html = "<div style='height:95%;overflow-y : none;width:50%;color:white;margin-left:auto;margin-right:auto;'><div><b>Place</b> : " + data.city.name + "</div>";
+	temp = data.list;
+	n = data.cnt;
+	for(i = 0 ; i < 5 && i < n ; i++) {
+		var x = "<div>";
+		t = temp[i];
+		d = new Date(t.dt * 1000);
+		x += "<b>Date</b> : " + d.getMonth() + "/" + d.getDate() + "<br>";
+		x += "<b>Temperature(C)</b> : " + ((t.main.temp)-273).toFixed(1) + "<br>";
+		x += "<b>Min. Temperature(C) </b>: " + ((t.main.temp_min)-273).toFixed(1) + "<br>";
+		x += "<b>Max. Temperature(C) </b>: " + ((t.main.temp_max)-273).toFixed(1) + "<br>";
+		x += "<b>Humidity </b>: " + t.main.humidity + "%<br></div><hr>";
+		html += x;
+	}
+	html += "</div>";
+	$("#screen-share-container").html(html);
+}
 
 function displayMoviePermissionContent(data) {
 	var div = createPermissionDiv({ 'question' : 'Do you want to view about the movie ' + data, 'type' : 'MOVIE', 'keyword' : data}, processUserPermChoice);
 	$("#screen-share-container").append(div);
 }
 function displayMovieContent(data) {
-	var html = "<div style='margin-top:5%;width:75%; background:black;color:white;margin-left:auto;margin-right:auto;border:1px solid black; padding :20px; text-align:justify;'><button style='float:right;' onClick = '$(this).parent().remove();'>Close</button><h1 align=center>" + data.Title + "</h1><div align=center><img src='"+data.Poster+"'></div><div style='text-align:justify;'><b>Plot : </b>"+data.Plot+"</div><div><b>Year : </b>" + data.Year + "</div>" + 
-				"<div><b>Director : </b>" + data.Director + "</div><div><b>Actors : </b>" + data.Actors + "</div><div><b>Writer : </b>" + data.Writer + "</div>"+
-				"<div><b>Release date : </b>" + data.Released + "</div><div><b>Language : </b>" + data.Language + "</div><div><b>Runtime : </b>" + data.Runtime + "</div>"+
-				"<div><b>imDb Rating : </b>" + data.imdbRating + "</div></div>";
-	$("#screen-share-container").html(html);
-	console.log("A");
+	if(data.Response != "False") {
+		var html = "<div style='height:95%;overflow-y : none;margin-top:5%;width:75%;color:white;margin-left:auto;margin-right:auto;border:1px solid black; padding :20px; text-align:justify;'><button style='float:right;' onClick = '$(this).parent().remove();'>Close</button><h1 align=center>" + data.Title + "</h1><div align=center><img src='"+data.Poster+"'></div><div style='text-align:justify;'><b>Plot : </b>"+data.Plot+"</div><div><b>Year : </b>" + data.Year + "</div>" + 
+					"<div><b>Director : </b>" + data.Director + "</div><div><b>Actors : </b>" + data.Actors + "</div><div><b>Writer : </b>" + data.Writer + "</div>"+
+					"<div><b>Release date : </b>" + data.Released + "</div><div><b>Language : </b>" + data.Language + "</div><div><b>Runtime : </b>" + data.Runtime + "</div>"+
+					"<div><b>imDb Rating : </b>" + data.imdbRating + "</div></div>";
+		$("#screen-share-container").html(html);
+	}
 }
 
 function displayLinkContent(data) {}
