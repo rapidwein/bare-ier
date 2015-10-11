@@ -1,0 +1,27 @@
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="/public/css/mainStyle.css" />
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        $(".button").on("click", function() {
+          var uname = $("#username");
+          if(uname.length > 0) {
+            document.cookie = "username=" + uname;
+            window.location = window.location + "room";
+          }
+        });
+      });
+      
+    </script>
+  </head>
+  <body>
+    <div id="main-header">Bare-ier</div>
+    <div id="main-content">
+      <input type='text' name='username' id='username'>
+      <input type='button' class='button' name='join' value = 'Join a room'>
+      <input type='button' class='button' 'name='create' value = 'Create a room'>
+    </div>
+  </body>
+    
+</html>
