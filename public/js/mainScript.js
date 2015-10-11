@@ -1,5 +1,5 @@
 var bareier = {
-	un : c.substring(9),
+	un : document.cookie.substring(9),
 	ui : 123
 };
 var bareier_client = {

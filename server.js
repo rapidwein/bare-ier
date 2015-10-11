@@ -2,7 +2,7 @@ var express = require("express"),
     app = express(),
     http = require("http").createServer(app),
     io = require("socket.io")(http),
-    //analyze = require("analyzer.js"),
+    analyze = require("./textanalyzer"),
     port = 3000,
     ipaddr = 'localhost';
 var users = {
@@ -17,8 +17,9 @@ io.on('connection', function(socket){
     else
       process.un = "Vivek";
     socket.emit('process',process);
-//    var data = analyze.textAnalyzer(process.text);
-//    //   socket.emit(data.type, data.data);
+    var data = analyze.analyseText(process.text);
+    console.log(data);
+    socket.emit(data.type, data.keyword);
     console.log(process);
   });
 });
