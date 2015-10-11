@@ -2,6 +2,7 @@ var express = require("express"),
     app = express(),
     http = require("http").createServer(app),
     io = require("socket.io")(http),
+    analyze = require("./textanalyzer"),
     port = 3000,
     ipaddr = 'localhost';
 
@@ -20,7 +21,13 @@ io.on('connection', function(socket){
   });
 
   socket.on("process",function(process){
+
     io.sockets.in(roomName).emit('process',process);
+    var data = analyze.analyseText(process.text);
+    console.log(data);
+    io.sockets.in(roomName).emit(data.type, data.keyword);
+    console.log(process);
+
   });
 });
 

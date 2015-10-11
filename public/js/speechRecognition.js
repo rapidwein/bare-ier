@@ -17,11 +17,11 @@ $(document).ready(function() {
     upgrade();
   }
   else {
-    socket.on("process",function(process){
+    /*socket.on("process",function(process){
       var d = new Date();
       d = d.getHours() + ":" + d.getMinutes();
       createChatMessageDiv(process_client.un, process_client.ui, process.text, d);
-    });
+    });*/
     start_button.style.display = 'inline-block';
     var recognition = new webkitSpeechRecognition();
     recognition.continuous = true;
