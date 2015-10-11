@@ -2,7 +2,7 @@ $(document).ready(function() {
 
   var process = {user: 'tt', type: '', text: ''};
   var tmp = '';
-  var isClicked= false;
+  var isClicked= true;
   var prev_length = 0;
   var start_length = 0;
   var to_be_pushed = '';
@@ -25,18 +25,18 @@ $(document).ready(function() {
     recognition.onstart = function() {
       recognizing = true;
       showInfo('info_speak_now');
-      start_button.innerHTML = "Stop";
+      start_button.innerHTML = "<img src='/public/assets/mic-animate.gif'>";
     };
 
     recognition.onerror = function(event) {
       if (event.error == 'no-speech') {
-        start_button.innerHTML = 'Start';
+        start_button.innerHTML = "<img src='/public/assets/mic.gif'>";
         showInfo('info_no_speech');
         ignore_onend = true;
       }
 
       if (event.error == 'audio-capture') {
-        start_button.innerHTML = 'Start';
+        start_button.innerHTML = "<img src='/public/assets/mic.gif'>";
         showInfo('info_no_microphone');
         ignore_onend = true;
       }
@@ -66,7 +66,7 @@ $(document).ready(function() {
       process = {user: bareier.ui, type: 'chat', text: final_transcript};
       socket.emit('process',process);
       showInfo('');
-      start_button.innerHTML = "Start";
+      start_button.innerHTML = "<img src='/public/assets/mic.gif'>";
     };
 
     recognition.onresult = function(event) {
@@ -109,13 +109,14 @@ if(isClicked){
   ignore_onend = false;
   //final_span.innerHTML = '';
   //interim_span.innerHTML = '';
-  start_button.innerHTML = 'Start';
+  start_button.innerHTML = '<img src="/public/assets/mic-animate.gif">';
   showInfo('info_allow');
   showButtons('none');
   start_timestamp = event.timeStamp;
   }
   else{
-  start_button.innerHTML = 'Stop';
+    isClicked = true;
+    start_button.innerHTML = "<img src='/public/assets/mic.gif'>";
   //final_span.innerHTML = "";
     recognition.stop();
     return;
@@ -146,7 +147,7 @@ function showButtons(style) {
 
 
 $('#start_button').on('mousedown', function(evt){
-    isClicked = true;
+    
     startButton(evt);
   });
   $('#start_button').on('mouseup', function(evt){
