@@ -2,6 +2,7 @@ var express = require("express"),
     app = express(),
     http = require("http").createServer(app),
     io = require("socket.io")(http),
+    //analyze = require("analyzer.js"),
     port = 3000,
     ipaddr = 'localhost';
 var users = {
@@ -16,6 +17,8 @@ io.on('connection', function(socket){
     else
       process.un = "Vivek";
     socket.emit('process',process);
+//    var data = analyze.textAnalyzer(process.text);
+//    //   socket.emit(data.type, data.data);
     console.log(process);
   });
 });
