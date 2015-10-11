@@ -4,9 +4,18 @@ var express = require("express"),
     io = require("socket.io")(http),
     port = 3000,
     ipaddr = 'localhost';
+var users = {
+  123: "Vivek",
+  234: "Varun"
+}
 io.on('connection', function(socket){
   console.log("user connected");
   socket.on("process",function(process){
+    if(process.ui == 123)
+      process.un = "Varun";
+    else
+      process.un = "Vivek";
+    socket.emit('process',process);
     console.log(process);
   });
 });

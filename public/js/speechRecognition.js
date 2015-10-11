@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-  var process = {user: 'tt', type: '', text: ''};
+  var process = {un: 'tt', ui: 0, type: '', text: ''};
   var tmp = '';
   var isClicked= false;
   var prev_length = 0;
@@ -17,6 +17,11 @@ $(document).ready(function() {
     upgrade();
   }
   else {
+    socket.on("process",function(process){
+      var d = new Date();
+      d = d.getHours() + ":" + d.getMinutes();
+      createChatMessageDiv(process_client.un, process_client.ui, process.text, d);
+    });
     start_button.style.display = 'inline-block';
     var recognition = new webkitSpeechRecognition();
     recognition.continuous = true;
@@ -63,7 +68,7 @@ $(document).ready(function() {
       var d = new Date();
       d = d.getHours() + ":" + d.getMinutes();
       createChatMessageDiv(bareier.un, bareier.ui, final_transcript, d);
-      process = {user: bareier.ui, type: 'chat', text: final_transcript};
+      process = {ui: bareier.ui, un: bareier.un, type: 'chat', text: final_transcript};
       socket.emit('process',process);
       showInfo('');
       start_button.innerHTML = "Start";

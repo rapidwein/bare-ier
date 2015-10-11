@@ -2,7 +2,10 @@ var bareier = {
 	un : "Vivek",
 	ui : 123
 };
-
+var bareier_client = {
+      un : "Varun",
+      ui : 234
+}
 function sendAJAXRequest(url, data, method, callback) {
 	$.ajax({
 		'url' : url,
