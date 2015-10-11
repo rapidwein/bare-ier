@@ -1,5 +1,5 @@
 var bareier = {
-	un : "Vivek",
+	un : c.substring(9),
 	ui : 123
 };
 var bareier_client = {
@@ -39,7 +39,7 @@ function createChatMessageDiv(username, userid, message, time) {
 	$(messageDiv).html(message);
 	$(timeDiv).html(time);
 
-	if(userid == bareier.ui) {
+	if(username == bareier.un) {
 		$(mainDiv).addClass("type1");
 	}
 	else {
@@ -52,8 +52,8 @@ function createChatMessageDiv(username, userid, message, time) {
 
 	var lastMessageDiv = $("#chat-messages").children().last();
 	if(lastMessageDiv.parent().children().length > 0) {
-		var lid = $(".username-view", lastMessageDiv).attr("uid");
-		if(lid == userid) {
+		var lid = $(".username-view", lastMessageDiv).html();
+		if(lid == username) {
 			$(".message-view", lastMessageDiv).parent().append(messageDiv);
 		}
 		else {
