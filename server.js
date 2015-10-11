@@ -4,31 +4,56 @@ var express = require("express"),
     io = require("socket.io")(http),
     port = 3000,
     ipaddr = 'localhost';
-var users = {
-  123: "Vivek",
-  234: "Varun"
-}
+
+var users = [];
+
+var rooms = {};
+
+var bodyParser = require('body-parser')
+
 io.on('connection', function(socket){
   console.log("user connected");
+  var roomName = "";
+  socket.on('join', function(data) {
+    socket.join(data.name);
+    roomName = data.name;
+  });
+
   socket.on("process",function(process){
-    if(process.ui == 123)
-      process.un = "Varun";
-    else
-      process.un = "Vivek";
-    socket.emit('process',process);
-    console.log(process);
+    io.sockets.in(roomName).emit('process',process);
   });
 });
+
 app.use('/bower_components', express.static(__dirname + '/bower_components'));
 app.use('/public', express.static(__dirname + '/public'));
 app.get('/',function(req,res){
   res.sendFile(__dirname + '/public/login.html');
 });
 
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
+
+app.post('/room', urlencodedParser, function(req, res) {
+  var uname = req.body.username;
+  var room = req.body.room;
+  if("join" in req.body) {
+    rooms[room].push(uname);
+  }
+  else {
+    rooms[room] = [uname];
+  }
+  res.redirect('/room/' + room);
+});
+
 app.get('/room',function(req,res){
+  res.sendFile(__dirname + '/public/index.html');
+});
+
+app.get('/room/:id', function(req, res) {
+  var id = req.params.id;
   res.sendFile(__dirname + '/public/index.html');
 });
 
 http.listen(port, function(){
   console.log("listening on *: " + port);
 });
+

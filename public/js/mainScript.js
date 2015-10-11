@@ -1,11 +1,9 @@
 var bareier = {
-	un : c.substring(9),
-	ui : 123
+	un : document.cookie.split(";")[0].substring(9),
+	ui : document.cookie.split(";")[0].substring(9),
+	room : document.cookie.split(";")[1].substring(6)
 };
-var bareier_client = {
-      un : "Varun",
-      ui : 234
-}
+
 function sendAJAXRequest(url, data, method, callback) {
 	$.ajax({
 		'url' : url,
