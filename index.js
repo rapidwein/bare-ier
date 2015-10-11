@@ -5,7 +5,10 @@ var express = require("express"),
     ipaddr = 'localhost';
 var app = express();
 var webServer = http.createServer(app).listen(port);
-var socketServer = io.listen(webServer);
+io(http).on('connection',function(socket){
+	console.log("a");
+});
+//var socketServer = io.listen(webServer);
 app.use('/public', express.static(__dirname + '/public'));
 
 app.get('/',function(req,res){
