@@ -4,6 +4,7 @@ var express = require("express"),
     io = require("socket.io")(http),
     analyze = require("./textanalyzer"),
     port = 3000,
+    request = require("request"),
     ipaddr = 'localhost';
 
 var users = [];
@@ -51,6 +52,25 @@ app.post('/room', urlencodedParser, function(req, res) {
   }
   res.redirect('/room/' + room);
 });
+
+app.post('/room/:id', urlencodedParser, function(req, res) {
+  var room = req.params.id;
+  var choice = req.body.choice;
+  var type = req.body.type;
+  var keyword = req.body.keyword;
+
+  switch(type) {
+    case 'MOVIE' :
+      request("http://www.omdbapi.com/?t=" + keyword, function (error, response, body) {
+          if (!error && response.statusCode == 200) {
+              res.end("{\"type\": \"displayMovie\", \"data\" : " + body + "}");
+          }
+      })
+
+      break;
+  }
+});
+
 
 app.get('/room',function(req,res){
   res.sendFile(__dirname + '/public/index.html');

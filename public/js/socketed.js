@@ -5,8 +5,14 @@ socket.on("chat",function(data){
   createChatMessageDiv(data.un, data.ui, data.text, d);
 });
 socket.on('MOVIE',function(data){
-  console.log(data);
+  displayCard("movie", data);
 });
-socket.on('CINEMA',function(data){});
-socket.on('MAP',function(data){});
-socket.on('WEATHER',function(data){});
+socket.on('CINEMA',function(data){
+	displayCard("movie", data);
+});
+socket.on('MAP',function(data){
+	displayCard("movie", data);
+});
+socket.on('WEATHER',function(data){
+	displayCard("movie", data);
+});
