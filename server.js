@@ -63,6 +63,9 @@ app.post('/room/:id', urlencodedParser, function(req, res) {
       })
 
       break;
+    case 'CINEMA' :
+      res.send("{\"type\": \"displayCinema\", \"data\" : \"movie\"}");
+      break;
   }
 });
 

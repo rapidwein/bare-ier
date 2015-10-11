@@ -95,6 +95,8 @@ function displayCard(type, data) {console.log(type);
 		case "flight" :
 			displayFlightPreviewContent(data);
 			break;
+                case "cinema" :
+                        displayCinemaPermissionContent(data);
 		case "map" :
 			switch(data.subtype) {
 				case "getLoc" :
@@ -114,6 +116,9 @@ function displayCard(type, data) {console.log(type);
 		case "displayFlight" :
 			displayFlightContent(data);
 			break;
+                case "displayCinema" :
+                        displayCinemaContent(data);
+                        break;
 		case "displayMap" :
 			displayMapContent(data);
 			break;
@@ -203,7 +208,13 @@ function displayLinkContent(data) {}
 
 function displayFlightPreviewContent(data) {}
 function displayFlightContent(data) {}
-
+function displayCinemaPermissionContent(data) {
+  var div = createPermissionDiv({ 'question' : 'Do you want to view showtimes of movies?', 'type' : 'CINEMA', 'keyword' : data}, processUserPermChoice);
+          $("#screen-share-container").append(div);
+}
+function displayCinemaContent(data) {
+  $("#screen-share-container").html("<div id='iframe-container'><button style='float:right;' onClick = '$(this).parent().remove();'>Close</button><iframe src='http://www.fandango.com/'></iframe></div>");
+}
 function displayLocationPermissionContent(data) {}
 function displayLocationMapContent(data) {}
 function displayMapContent(data) {}
