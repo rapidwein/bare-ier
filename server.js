@@ -6,7 +6,6 @@ var express = require("express"),
     port = 3000,
     request = require("request"),
     ipaddr = 'localhost';
-
 var users = [];
 
 var rooms = {};
@@ -19,16 +18,12 @@ io.on('connection', function(socket){
   socket.on('join', function(data) {
     socket.join(data.name);
     roomName = data.name;
-    console.log(roomName);
   });
 
   socket.on("process",function(process){
-    console.log(roomName + "RNAME");
     io.to(roomName).emit('chat',process);
     var data = analyze.analyseText(process.text);
-    console.log(data);
     io.to(roomName).emit(data.type, data.keyword);
-    console.log(process);
 
   });
 });

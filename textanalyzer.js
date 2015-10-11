@@ -1,8 +1,8 @@
+var analyseText = function(text) { 
 var data = {
 	type: "",
 	keyword: "", 
 };
-var analyseText = function(text) { 
 	var index1, index2;
 	if(((index1 = text.indexOf("come to")) || (index1 = text.indexOf("came to")) || (index1 = text.indexOf("gone to")) || (index1 = text.indexOf("went to"))) != -1) {
 		s = text.charAt(index+7);
