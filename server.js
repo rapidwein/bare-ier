@@ -63,6 +63,11 @@ app.post('/room/:id', urlencodedParser, function(req, res) {
       })
 
       break;
+
+    case 'CINEMA' :
+      res.send("{\"type\": \"displayCinema\", \"data\" : \"movie\"}");
+      break;
+
     case 'WEATHER' :
       request("http://api.openweathermap.org/data/2.5/forecast/city?q=" + keyword + "&APPID=af1ef7c8d14d59b2389cb40f49ee2370", function (error, response, body) {
           if (!error && response.statusCode == 200) {
@@ -87,9 +92,6 @@ app.post('/room/:id', urlencodedParser, function(req, res) {
           }
       })
       break;
-
-
-
   }
 });
 

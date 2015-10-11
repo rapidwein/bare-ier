@@ -38,7 +38,7 @@ var data = {
 		data.keyword = text.substring(index1 + 8,text.length);
 		data.type = "MOVIE";	
 	}
-	else if((index1 = text.indexOf("watching")) != -1) {
+	else if(((index1 = text.indexOf("watching")) != -1) && (((index2 = text.indexOf("movie")) == -1) || (text.indexOf("movie") == text.length-5))) {
 		s = text.charAt(index1+8);
 		if(s == "." || s == text.length - 1) {
 			data.type = "DEFAULT";			
@@ -105,7 +105,7 @@ var data = {
 			data.type = "LOCATION";
 			
 	}
-	else if((index1 = text.indexOf("watch")) != -1) {
+	else if(((index1 = text.indexOf("watch")) != -1) && (((index2 = text.indexOf("movie")) == -1) || (text.indexOf("movie") != text.length-5))) {
 		s = text.charAt(index1+5);
 		if(s == "." || s == text.length - 1) {
 			data.type = "DEFAULT" ;
