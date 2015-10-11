@@ -2,10 +2,45 @@
   <head>
     <link rel="stylesheet" type="text/css" href="/easyrtc/easyrtc.css" />
     <script src="/socket.io/socket.io.js"></script>
-    <script type="text/javascript" src="/easyrtc/easyrtc.js"></script>
   </head>
   <body>
     <h1>Bare-ier</h1>
-    <audio style="float:left" id="client"></audio>
+    <button id="start_button" onclick="startButton(event)">Start Mic</button>
   </body>
+    <script type="text/javascript">
+      var socket = io();
+      var final_transcript = '';
+      var recognizing = 'false';
+      if(!('webkitSpeechRecognition' in window)){
+        console.log("Browser not supported!");
+      }
+      else{
+        var recognition = new webkitSpeechRecognition();
+        recognition.continuous = true;
+      
+        recognition.onstart = function(event){
+          recognizing = true;
+        }
+        recognition.onend = function(){
+          recognizing = false;
+        }
+        recognition.onresult = function(event){
+          for(var i = event.resultIndex; i < event.results.length; ++i)
+            final_transcript += event.results[i][0].transcript;
+          final_transcript = capitalize(final_transcript);
+        }
+        function startButton(event){
+          if(recognizing){
+            recognition.stop();
+            return;
+          }
+          final_transcript = '';
+          recognition.lang = 'English';
+          recognition.start();
+        }
+        
+        var process = {user: "localhost", text: final_transcript};
+        socket.emit("process", process);
+      }
+    </script>
 </html>
