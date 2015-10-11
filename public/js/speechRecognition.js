@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-  var process = {user: 'tt', text: ''};
+  var process = {user: 'tt', type: '', text: ''};
   var tmp = '';
   var isClicked= false;
   var prev_length = 0;
@@ -63,6 +63,8 @@ $(document).ready(function() {
       var d = new Date();
       d = d.getHours() + ":" + d.getMinutes();
       createChatMessageDiv(bareier.un, bareier.ui, final_transcript, d);
+      process = {user: bareier.ui, type: 'chat', text: final_transcript};
+      socket.emit('process',process);
       showInfo('');
       start_button.innerHTML = "Start";
     };
@@ -100,11 +102,12 @@ function capitalize(s) {
 
 function startButton(event) {
 if(isClicked){
+  isClicked = false;
   final_transcript = '';
-  recognition.lang = select_dialect.value;
+  recognition.lang = 'en-us';
   recognition.start();
   ignore_onend = false;
-  final_span.innerHTML = '';
+  //final_span.innerHTML = '';
   //interim_span.innerHTML = '';
   start_button.innerHTML = 'Start';
   showInfo('info_allow');
@@ -113,7 +116,7 @@ if(isClicked){
   }
   else{
   start_button.innerHTML = 'Stop';
-  final_span.innerHTML = "";
+  //final_span.innerHTML = "";
     recognition.stop();
     return;
   }
