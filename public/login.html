@@ -1,6 +1,7 @@
 <html>
   <head>
     <link rel="stylesheet" type="text/css" href="/public/css/mainStyle.css" />
+    <script src="/socket.io/socket.io.js"></script>
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
     <script>
       $(document).ready(function() {
@@ -8,10 +9,8 @@
           var uname = $("#username").val();
           var room = $("#room").val();
           if(uname.length > 0 && room.length > 0) {
-            console.log(uname + " : " + room);
             document.cookie = "username=" + uname;
             document.cookie = "room=" + room;
-            io().emit('join', {name : room});
             return true;
           }
           return false;

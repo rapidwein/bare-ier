@@ -65,14 +65,17 @@ function createChatMessageDiv(username, userid, message, time) {
 }
 
 $(document).ready(function() {
+	io().emit('join', {'name' : bareier.room});
 	$("#chat-input-text").keypress(function(event) {
 		var tempContent = $("#chat-input-text").html();
 		if(tempContent.length > 0) {
 			if(event.keyCode == 13) {
 				var d = new Date();
 				d = d.getHours() + ":" + d.getMinutes();
-				createChatMessageDiv(bareier.un, bareier.ui, tempContent, d);
-				$("#chat-input-text").html("");
+				//createChatMessageDiv(bareier.un, bareier.ui, tempContent, d);
+				process = {ui: bareier.ui, un: bareier.un, type: 'chat', text: tempContent};
+      			io().emit('process',process);
+      			$("#chat-input-text").html("");
 			}
 		}
 	});

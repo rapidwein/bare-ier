@@ -67,9 +67,9 @@ $(document).ready(function() {
       }
       var d = new Date();
       d = d.getHours() + ":" + d.getMinutes();
-      createChatMessageDiv(bareier.un, bareier.ui, final_transcript, d);
+      //createChatMessageDiv(bareier.un, bareier.ui, final_transcript, d);
       process = {ui: bareier.ui, un: bareier.un, type: 'chat', text: final_transcript};
-      io.sockets.in(document.cookie.split(';')[1].substring(6)).emit('process',process);
+      socket.emit('process',process);
       showInfo('');
       start_button.innerHTML = "<img src='/public/assets/mic.gif'>";
     };

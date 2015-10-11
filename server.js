@@ -18,14 +18,15 @@ io.on('connection', function(socket){
   socket.on('join', function(data) {
     socket.join(data.name);
     roomName = data.name;
+    console.log(roomName);
   });
 
   socket.on("process",function(process){
-
-    io.sockets.in(roomName).emit('process',process);
+    console.log(roomName + "RNAME");
+    io.to(roomName).emit('chat',process);
     var data = analyze.analyseText(process.text);
     console.log(data);
-    io.sockets.in(roomName).emit(data.type, data.keyword);
+    io.to(roomName).emit(data.type, data.keyword);
     console.log(process);
 
   });
